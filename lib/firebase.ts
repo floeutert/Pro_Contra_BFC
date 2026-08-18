@@ -34,10 +34,17 @@ export interface Topic {
   createdAt: Timestamp | null;
 }
 
+export interface Cluster {
+  id: string;
+  name: string;
+  order: number;
+}
+
 export interface Point {
   id: string;
-  type: "pro" | "contra";
+  type: "pro" | "contra" | "anmerkung";
   text: string;
+  clusterId?: string | null;
   createdAt: Timestamp | null;
 }
 
@@ -63,12 +70,53 @@ export async function deleteTopic(topicId: string) {
   return deleteDoc(doc(db, "topics", topicId));
 }
 
+// ─── Clusters ─────────────────────────────────────────────────────────────────
+
+const DEFAULT_CLUSTERS = ["Effizienz", "Klarheit", "Transparenz", "Kosten"];
+
+export async function initDefaultClusters() {
+  const snap = await getDocs(collection(db, "clusters"));
+  if (snap.empty) {
+    for (let i = 0; i < DEFAULT_CLUSTERS.length; i++) {
+      await addDoc(collection(db, "clusters"), {
+        name: DEFAULT_CLUSTERS[i],
+        order: i,
+      });
+    }
+  }
+}
+
+export function subscribeToClusters(callback: (clusters: Cluster[]) => void) {
+  const q = query(collection(db, "clusters"), orderBy("order", "asc"));
+  return onSnapshot(q, (snap) => {
+    const clusters = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Cluster));
+    callback(clusters);
+  });
+}
+
+export async function addCluster(name: string) {
+  return addDoc(collection(db, "clusters"), {
+    name: name.trim(),
+    order: Date.now(),
+  });
+}
+
+export async function deleteCluster(clusterId: string) {
+  return deleteDoc(doc(db, "clusters", clusterId));
+}
+
 // ─── Points ───────────────────────────────────────────────────────────────────
 
-export async function addPoint(topicId: string, type: "pro" | "contra", text: string) {
+export async function addPoint(
+  topicId: string,
+  type: "pro" | "contra" | "anmerkung",
+  text: string,
+  clusterId?: string | null
+) {
   return addDoc(collection(db, "topics", topicId, "points"), {
     type,
     text,
+    clusterId: clusterId ?? null,
     createdAt: serverTimestamp(),
   });
 }
