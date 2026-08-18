@@ -14,11 +14,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de">
       <body className={`${inter.className} bg-gray-50 min-h-screen`}>
         <header className="bg-brand-green text-white shadow-md">
-          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
-            <span className="text-2xl">⚽</span>
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://buchholzerfc.com/wp-content/uploads/2023/03/BFC-Logo.svg"
+              alt="Buchholzer FC Logo"
+              className="h-12 w-auto"
+            />
             <div>
               <h1 className="text-xl font-bold leading-tight">Buchholzer FC</h1>
-              <p className="text-green-200 text-sm">Vorstand · Pro &amp; Contra</p>
+              <p className="text-blue-200 text-sm">Vorstand · Pro &amp; Contra</p>
             </div>
           </div>
         </header>

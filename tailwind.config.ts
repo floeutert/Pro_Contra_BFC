@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          green: "#1a6b3c",
-          lightgreen: "#2d9d5e",
-          gold: "#f5a623",
+          green: "#003082",
+          lightgreen: "#1a4aa0",
+          gold: "#ffffff",
         },
       },
     },

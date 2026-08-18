@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .print-header {
+    display: block !important;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Show both columns side by side on print */
+  .grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Hide input forms in print */
+  textarea,
+  button {
+    display: none !important;
+  }
+
+  /* Make list items visible */
+  li {
+    break-inside: avoid;
+  }
+}
