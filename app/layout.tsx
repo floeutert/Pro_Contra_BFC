@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://buchholzerfc.com/wp-content/uploads/2023/03/BFC-Logo.svg"
+              src="/bfc-logo.png"
               alt="Buchholzer FC Logo"
               className="h-12 w-auto"
             />

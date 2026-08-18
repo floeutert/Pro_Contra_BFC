@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Outer circle -->
+  <circle cx="50" cy="50" r="48" fill="#002B6B" stroke="#ffffff" stroke-width="2"/>
+  <!-- Inner ring -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+  <!-- BFC Text -->
+  <text x="50" y="46" font-family="Arial Black, Arial, sans-serif" font-size="20" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">BFC</text>
+  <!-- Buchholzer FC text -->
+  <text x="50" y="62" font-family="Arial, sans-serif" font-size="7" fill="#ffffff" text-anchor="middle" letter-spacing="1">BUCHHOLZER</text>
+  <text x="50" y="72" font-family="Arial, sans-serif" font-size="7" fill="#ffffff" text-anchor="middle" letter-spacing="1">FUSSBALL CLUB</text>
+  <!-- Bottom stripe decoration -->
+  <path d="M 20 80 Q 50 90 80 80" stroke="#ffffff" stroke-width="1.2" fill="none"/>
+</svg>

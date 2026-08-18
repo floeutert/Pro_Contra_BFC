@@ -65,8 +65,79 @@ export default function TopicPage() {
     XLSX.writeFile(wb, `BFC_${topic?.title ?? "export"}.xlsx`);
   }
 
-  function exportPDF() {
-    window.print();
+  async function exportPDF() {
+    const { jsPDF } = await import("jspdf");
+    const doc = new jsPDF();
+    const title = topic?.title ?? "Pro & Contra";
+    const date = new Date().toLocaleDateString("de-DE");
+
+    // Header
+    doc.setFillColor(12, 76, 122); // BFC Blau
+    doc.rect(0, 0, 210, 20, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Buchholzer FC – Pro & Contra", 10, 13);
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Stand: ${date}`, 170, 13);
+
+    // Topic title
+    doc.setTextColor(12, 76, 122);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text(title, 10, 32);
+    if (topic?.description) {
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(100, 100, 100);
+      doc.text(topic.description, 10, 40);
+    }
+
+    const startY = topic?.description ? 50 : 42;
+    const colW = 88;
+    const margin = 10;
+    const lineH = 7;
+
+    // Column headers
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setFillColor(34, 197, 94); // green
+    doc.rect(margin, startY, colW, 8, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.text(`Pro (${pros.length})`, margin + 3, startY + 5.5);
+
+    doc.setFillColor(239, 68, 68); // red
+    doc.rect(margin + colW + 4, startY, colW, 8, "F");
+    doc.text(`Contra (${contras.length})`, margin + colW + 7, startY + 5.5);
+
+    // Points
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    const maxLen = Math.max(pros.length, contras.length);
+    let y = startY + 12;
+
+    for (let i = 0; i < maxLen; i++) {
+      if (y > 270) break; // page overflow guard
+      const proLines = doc.splitTextToSize(pros[i]?.text ?? "", colW - 6);
+      const contraLines = doc.splitTextToSize(contras[i]?.text ?? "", colW - 6);
+      const rowH = Math.max(proLines.length, contraLines.length) * lineH;
+
+      // alternating row bg
+      if (i % 2 === 0) {
+        doc.setFillColor(240, 253, 244);
+        doc.rect(margin, y - 1, colW, rowH, "F");
+        doc.setFillColor(254, 242, 242);
+        doc.rect(margin + colW + 4, y - 1, colW, rowH, "F");
+      }
+
+      doc.setTextColor(30, 30, 30);
+      if (pros[i]) doc.text(proLines, margin + 3, y + 4);
+      if (contras[i]) doc.text(contraLines, margin + colW + 7, y + 4);
+      y += rowH + 2;
+    }
+
+    doc.save(`BFC_${title}.pdf`);
   }
 
   return (
