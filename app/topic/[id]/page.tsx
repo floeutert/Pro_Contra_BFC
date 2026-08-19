@@ -412,7 +412,7 @@ function ClusteredColumn({
   function handleKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      onAdd();
+      if (selectedCluster) onAdd();
     }
   }
 
@@ -439,7 +439,7 @@ function ClusteredColumn({
           />
           <button
             onClick={onAdd}
-            disabled={saving || !inputValue.trim()}
+            disabled={saving || !inputValue.trim() || !selectedCluster}
             className={`${colorBtn} text-white rounded-lg px-3 py-2 transition-colors disabled:opacity-40 flex-shrink-0`}
           >
             <Plus size={17} />
@@ -450,7 +450,7 @@ function ClusteredColumn({
           onChange={(e) => onClusterChange(e.target.value)}
           className="border border-gray-300 bg-white rounded-lg px-2 py-1.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
         >
-          <option value="">Kein Cluster</option>
+          <option value="" disabled>Bitte Cluster auswählen</option>
           {clusters.map((c) => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
